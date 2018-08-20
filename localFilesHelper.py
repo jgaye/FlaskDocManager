@@ -1,10 +1,10 @@
 import pathlib
 
-testDirectory = pathlib.Path('/Users/Marvin/projects/FlaskDocManager/testFolder')
+testDirectory = '/Users/Marvin/projects/FlaskDocManager/testFolder/'
 
 def list():
   documents = []
-  for currentFile in testDirectory.iterdir():  
+  for currentFile in pathlib.Path(testDirectory).iterdir():  
     document = {}
     document['name'] = currentFile.name
     document['path'] = currentFile.as_uri()
@@ -15,4 +15,8 @@ def download(document):
   return "<h1>" + document + " downloaded</h1>"
 
 def delete(document):
-  return "<h1>" + document + " deleted</h1>"
+  fullPath = pathlib.Path(testDirectory + document)
+  fullPath.unlink()
+  # TODO check that the deletion was successful
+  # TODO give the user a log message to confirm the delete was successful
+  return "<h1>" + fullPath.as_uri() + " deleted</h1>"

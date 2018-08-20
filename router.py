@@ -1,4 +1,4 @@
-from flask import (Flask, render_template)
+from flask import (Flask, render_template, redirect, url_for)
 
 # change type here
 # list(), download(), delete() and upload() reserved here
@@ -20,12 +20,12 @@ def index():
   # Display the list with controls
   return render_template('listPage.html', documents = documents)
 
-@app.route("/<string:document>/download", methods=['GET'])
+@app.route("/download/<string:document>", methods=['GET'])
 def download_document(document):
   result = download(document)
   return result
 
-@app.route("/<string:document>/delete", methods=['GET'])
+@app.route("/delete/<string:document>", methods=['POST'])
 def delete_document(document):
   result = delete(document)
-  return result
+  return redirect(url_for('index'))
