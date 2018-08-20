@@ -16,6 +16,7 @@ def allowed_file(filename):
   return '.' in filename and \
     filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+# Should I use the Flask-Uploads extension instead ?
 @app.route('/', methods=['GET', 'POST'])
 def upload_document():
   if request.method == 'POST':
@@ -33,15 +34,7 @@ def upload_document():
       filename = secure_filename(file.filename)
       file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
       return redirect(url_for('index'))
-  return '''
-  <!doctype html>
-  <title>Upload new File</title>
-  <h1>Upload new File</h1>
-  <form method=post enctype=multipart/form-data>
-    <input type=file name=file>
-    <input type=submit value=Upload>
-  </form>
-  '''
+  return render_template('uploadPage.html')
 
 # Listing page
 @app.route("/index")
