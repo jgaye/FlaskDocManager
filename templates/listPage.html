@@ -1,0 +1,10 @@
+<!doctype html>
+<title>Listing page</title>
+<h1>Your documents</h1>
+{% for document in documents %}
+  <li>
+    <p>{{document.name}}</p>
+    <button>Download</button>
+    <button>Delete</button>
+  </li>
+{% endfor %}
