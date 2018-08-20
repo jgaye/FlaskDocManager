@@ -1,7 +1,14 @@
 <!doctype html>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+
 <title>Uploading page</title>
+
 <h1>Upload new File</h1>
 <form method=post enctype=multipart/form-data>
   <input type=file name=file>
   <input type=submit value=Upload>
 </form>
+
+<br>
+<a href="{{url_for('index')}}">Here to see the list of your documents</a>
