@@ -1,4 +1,5 @@
 import pathlib
+import urllib.request
 
 testDirectory = '/Users/Marvin/projects/FlaskDocManager/testFolder/'
 
@@ -12,11 +13,20 @@ def list():
   return documents
 
 def download(document):
+  # Download the file in this directory
+  fullPath = pathlib.Path(testDirectory + document)
+  urllib.request.urlretrieve(fullPath.as_uri(), document)
+  # TODO ask the user where he wants to download the file
+  # TODO check that the download was successful
+  # TODO display a confirmation message to the user
+
   return "<h1>" + document + " downloaded</h1>"
 
 def delete(document):
+
   fullPath = pathlib.Path(testDirectory + document)
   fullPath.unlink()
+
   # TODO check that the deletion was successful
   # TODO give the user a log message to confirm the delete was successful
   return "<h1>" + fullPath.as_uri() + " deleted</h1>"

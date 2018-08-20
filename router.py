@@ -23,7 +23,7 @@ def index():
 @app.route("/download/<string:document>", methods=['GET'])
 def download_document(document):
   result = download(document)
-  return result
+  return redirect(url_for('index'))
 
 @app.route("/delete/<string:document>", methods=['POST'])
 def delete_document(document):
