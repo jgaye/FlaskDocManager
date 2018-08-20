@@ -19,3 +19,13 @@ def index():
 
   # Display the list with controls
   return render_template('listPage.html', documents = documents)
+
+@app.route("/<string:document>/download", methods=['GET'])
+def download_document(document):
+  result = download(document)
+  return result
+
+@app.route("/<string:document>/delete", methods=['GET'])
+def delete_document(document):
+  result = delete(document)
+  return result

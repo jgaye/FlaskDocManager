@@ -3,8 +3,7 @@
 <h1>Your documents</h1>
 {% for document in documents %}
   <li>
-    <p>{{document.name}}</p>
-    <button>Download</button>
-    <button>Delete</button>
+    <a href="{{url_for( 'download_document', document=document.name )}}">{{document.name}}</p>
+    <button href="{{url_for( 'delete_document', document=document.name )}}">Delete</button>
   </li>
 {% endfor %}
