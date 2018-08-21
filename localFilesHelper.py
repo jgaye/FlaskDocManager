@@ -20,7 +20,7 @@ def download(document):
   # TODO check that the download was successful
   # TODO display a confirmation message to the user
 
-  return "<h1>" + document + " downloaded</h1>"
+  return document + " was successfully downloaded"
 
 def delete(document):
 
@@ -29,4 +29,4 @@ def delete(document):
 
   # TODO check that the deletion was successful
   # TODO give the user a log message to confirm the delete was successful
-  return "<h1>" + fullPath.as_uri() + " deleted</h1>"
+  return fullPath.as_uri() + " was successfully deleted"
