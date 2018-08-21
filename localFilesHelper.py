@@ -4,7 +4,8 @@ import urllib.request
 from werkzeug.utils import secure_filename
 
 
-UPLOAD_FOLDER = '/Users/Marvin/projects/FlaskDocManager/testFolder/'
+UPLOAD_FOLDER = '/Users/Marvin/projects/FlaskDocManager/uploadFolder/'
+DOWNLOAD_FOLDER = '/Users/Marvin/projects/FlaskDocManager/downloadFolder/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'xlsx', 'pptx', 'docx'])
 
 def list():
@@ -19,7 +20,7 @@ def list():
 def download(document):
   # Download the file in this directory
   fullPath = pathlib.Path(UPLOAD_FOLDER + document)
-  urllib.request.urlretrieve(fullPath.as_uri(), document)
+  urllib.request.urlretrieve(fullPath.as_uri(), DOWNLOAD_FOLDER + document)
   # TODO ask the user where he wants to download the file
   # TODO check that the download was successful
   # TODO display a confirmation message to the user
