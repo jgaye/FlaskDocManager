@@ -16,8 +16,12 @@ s3 = boto3.client(
 )
 
 def list():
-  # returns only the first 1000 elements of S3
-  s3Contents = s3.list_objects(Bucket=S3_BUCKET)['Contents']
+  try:
+    # returns only the first 1000 elements of S3
+    s3Contents = s3.list_objects(Bucket=S3_BUCKET)['Contents']
+  except Exception as e:
+    # This is a catch all exception, edit this part to fit your needs.
+    return "Listing failed with: " + str(e)
 
   # Transform the data to use the expected schema
   documents = []
@@ -36,8 +40,8 @@ def delete(document):
     s3.delete_object(Bucket=S3_BUCKET, Key=document)
     return document + ' was successfully deleted'
   except Exception as e:
-      # This is a catch all exception, edit this part to fit your needs.
-      return "Delete failed with: " + str(e)
+    # This is a catch all exception, edit this part to fit your needs.
+    return "Delete failed with: " + str(e)
 
 def allowed_file(filename):
   return '.' in filename and \
