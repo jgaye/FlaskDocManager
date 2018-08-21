@@ -46,12 +46,18 @@ def index():
   # Display the list with controls
   return render_template('listPage.html', documents = documents)
 
-@app.route("/download/<string:document>", methods=['GET'])
-def download_document(document):
-  result = download(document)
-  return redirect(url_for('index'))
+@app.route("/<string:document>", methods=['GET', 'POST'])
+def act_on_document(document):
+  if request.method == 'GET':
+    result = download(document)
+    return redirect(url_for('index'))
 
-@app.route("/delete/<string:document>", methods=['POST'])
-def delete_document(document):
-  result = delete(document)
-  return redirect(url_for('index'))
+  # the method should be DELETE but the template doesn't support DELETE
+  elif request.method == 'POST':
+    result = delete(document)
+    return redirect(url_for('index'))
+
+# @app.route("/delete/<string:document>", methods=['POST'])
+# def delete_document(document):
+#   result = delete(document)
+#   return redirect(url_for('index'))
