@@ -1,8 +1,12 @@
 from flask import (Flask, flash, request, render_template, redirect, url_for)
 
-# change type here
+# change storage location here
 # list(), download(), delete() and upload() reserved here
-from localFilesHelper import *
+
+# uncomment for local file management
+# from localFilesHelper import list, download, delete, upload
+# uncomment for S3 fil management
+from S3Helper import list, download, delete, upload
 
 application = Flask(__name__)
 application.secret_key = b'mySecretKeyForFlash'
