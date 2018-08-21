@@ -67,5 +67,4 @@ def upload(request):
 
     except Exception as e:
       # This is a catch all exception, edit this part to fit your needs.
-      print("Something Happened: ", e)
-      return str(e)
+      return "Upload failed with: " + str(e)
