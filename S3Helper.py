@@ -2,12 +2,12 @@ import os
 import boto3, botocore
 from werkzeug.utils import secure_filename
 
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'xlsx', 'pptx', 'docx'])
+
 S3_BUCKET                 = os.environ.get("S3_BUCKET_NAME")
 S3_KEY                    = os.environ.get("S3_ACCESS_KEY")
 S3_SECRET                 = os.environ.get("S3_SECRET_ACCESS_KEY")
 S3_LOCATION               = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET)
-
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'xlsx', 'pptx', 'docx'])
 
 s3 = boto3.client(
    "s3",
@@ -32,7 +32,12 @@ def download(document):
   return "not implemented"
 
 def delete(document):
-  return "not implemented"
+  try:
+    s3.delete_object(Bucket=S3_BUCKET, Key=document)
+    return document + ' was successfully deleted'
+  except Exception as e:
+      # This is a catch all exception, edit this part to fit your needs.
+      return "Delete failed with: " + str(e)
 
 def allowed_file(filename):
   return '.' in filename and \
