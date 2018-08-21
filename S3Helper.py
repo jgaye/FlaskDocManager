@@ -2,8 +2,11 @@ import os
 import boto3, botocore
 from werkzeug.utils import secure_filename
 
+DOWNLOAD_FOLDER = './downloadFolder/'
+
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'xlsx', 'pptx', 'docx'])
 
+# How to setup on AWS ?
 S3_BUCKET                 = os.environ.get("S3_BUCKET_NAME")
 S3_KEY                    = os.environ.get("S3_ACCESS_KEY")
 S3_SECRET                 = os.environ.get("S3_SECRET_ACCESS_KEY")
@@ -32,15 +35,18 @@ def list():
   return documents
 
 def download(document):
-  # Download the file in this directory
-  return "not implemented"
+  # downloads to the local DOWNLOAD_FOLDER, will that work on AWS?
+  try:
+    s3.download_file(S3_BUCKET, document, DOWNLOAD_FOLDER + document)  
+    return document + ' was successfully downloaded'
+  except Exception as e:
+    return "Download failed with: " + str(e)
 
 def delete(document):
   try:
     s3.delete_object(Bucket=S3_BUCKET, Key=document)
     return document + ' was successfully deleted'
   except Exception as e:
-    # This is a catch all exception, edit this part to fit your needs.
     return "Delete failed with: " + str(e)
 
 def allowed_file(filename):
@@ -75,5 +81,4 @@ def upload(request):
       return filename + ' was successfully uploaded'
 
     except Exception as e:
-      # This is a catch all exception, edit this part to fit your needs.
       return "Upload failed with: " + str(e)
