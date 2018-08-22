@@ -88,10 +88,13 @@ def upload(request):
     try:
       s3 = open_s3_session(session['s3_key'], session['s3_secret'])
 
+      # upload to the current user folder in S3
+      UPLOAD_FOLDER = 'home/' + session['username'] + '/'
+
       s3.upload_fileobj(
           file,
           session['s3_bucket'],
-          'home/' + session['username'] + '/' + filename,
+          UPLOAD_FOLDER + filename,
           ExtraArgs={
               "ContentType": file.content_type
           }
