@@ -1,5 +1,5 @@
 import os 
-from flask import (Flask, flash, request, session, render_template, redirect, url_for)
+from flask import (Flask, flash, request, render_template, redirect, url_for)
 
 '''
   application setup
@@ -62,7 +62,7 @@ def register():
     if result is None:
       flash("User successfully registered. Now please login")
       return redirect(url_for('login'))
-      
+
     flash(result)
     return redirect(url_for('register'))
 
@@ -79,45 +79,50 @@ def register():
 # from localFilesHelper import list, download, delete, upload
 
 # uncomment for S3 file management
-# from S3Helper import list, download, delete, upload
+from helpers.S3Helper import list, download, delete, upload
 
 # Listing page
-# @application.route("/index")
-# def index():
+@application.route("/index")
+def index():
 
-#   # Get the list of documents
-#   documents = list()
+  # Get the list of documents
+  result = list()
 
-#   # Display the list with controls
-#   return render_template('listPage.html', documents = documents)
+  # If we have a string it is an error message
+  if type(result) is str: 
+    flash(result)
+    return render_template('listPage.html', documents = [])
 
-# @application.route("/<string:document>", methods=['GET', 'POST'])
-# def act_on_document(document):
-#   if request.method == 'GET':
-#     # Try to perform the download and get a confirmation message
-#     result = download(document)
+  # Display the list with controls
+  return render_template('listPage.html', documents = result)
 
-#     # Flash allows to show the confirmation message at index
-#     flash(result)
-#     return redirect(url_for('index'))
+@application.route("/<string:document>", methods=['GET', 'POST'])
+def act_on_document(document):
+  if request.method == 'GET':
+    # Try to perform the download and get a confirmation message
+    result = download(document)
 
-#   # the method should be DELETE but the template doesn't support DELETE
-#   elif request.method == 'POST':
-#     # Try to perform the delete and get a confirmation message
-#     result = delete(document)
+    # Flash allows to show the confirmation message at index
+    flash(result)
+    return redirect(url_for('index'))
 
-#     # Flash allows to show the confirmation message at index
-#     flash(result)
-#     return redirect(url_for('index'))
+  # the method should be DELETE but the template doesn't support DELETE
+  elif request.method == 'POST':
+    # Try to perform the delete and get a confirmation message
+    result = delete(document)
 
-# @application.route('/upload', methods=['GET', 'POST'])
-# def upload_document():
-#   if request.method == 'POST':
-#     # Try to perform the upload and get a confirmation message
-#     result = upload(request)
+    # Flash allows to show the confirmation message at index
+    flash(result)
+    return redirect(url_for('index'))
 
-#     # Flash allows to show the confirmation message at index
-#     flash(result)
-#     return redirect(url_for('index'))
+@application.route('/upload', methods=['GET', 'POST'])
+def upload_document():
+  if request.method == 'POST':
+    # Try to perform the upload and get a confirmation message
+    result = upload(request)
 
-#   return render_template('uploadPage.html')
+    # Flash allows to show the confirmation message at index
+    flash(result)
+    return redirect(url_for('index'))
+
+  return render_template('uploadPage.html')

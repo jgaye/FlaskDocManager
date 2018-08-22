@@ -21,6 +21,9 @@ def auth_login(request):
     session.clear()
     session['user_id'] = user['id']
     session['username'] = user['username']
+    session['s3_bucket'] = user['s3_bucket']
+    session['s3_key'] = user['s3_key']
+    session['s3_secret'] = user['s3_secret']
     return None
   return error
 
@@ -56,7 +59,8 @@ def auth_register(request):
   if error is None:
       db.execute(
           'INSERT INTO user (username, password, s3_bucket, s3_key, s3_secret) VALUES (?, ?, ?, ?, ?)',
-          (username, generate_password_hash(password), s3_bucket, s3_key, generate_password_hash(s3_secret))
+          # TODO How to hash s3_secret and use the unhash for s3 session opening ?
+          (username, generate_password_hash(password), s3_bucket, s3_key, s3_secret)
       )
       db.commit()
       return None
