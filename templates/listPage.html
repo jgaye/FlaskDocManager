@@ -2,6 +2,10 @@
 
 <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 
+<form action="{{ url_for('logout') }}" method="GET">
+  <button>Logout</button>
+</form>
+
 <title>Listing page</title>
 {% with messages = get_flashed_messages() %}
   {% if messages %}

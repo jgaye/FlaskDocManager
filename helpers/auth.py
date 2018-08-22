@@ -20,5 +20,11 @@ def auth_login(request):
   if error is None:
     session.clear()
     session['user_id'] = user['id']
+    session['username'] = user['username']
     return None
   return error
+
+def auth_logout():
+  username = session['username']
+  session.clear()
+  return username + " successfully logged out"

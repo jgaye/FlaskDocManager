@@ -4,6 +4,10 @@
 
 <title>Uploading page</title>
 
+<form action="{{ url_for('logout') }}" method="GET">
+  <button>Logout</button>
+</form>
+
 <h1>Upload new File</h1>
 <form method=post enctype=multipart/form-data>
   <input type=file name=file>

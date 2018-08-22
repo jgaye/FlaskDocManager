@@ -31,10 +31,11 @@ db.init_app(application)
   auth routes
 '''
 
-from helpers.auth import auth_login
+from helpers.auth import auth_login, auth_logout
 
 # Login page
 @application.route("/", methods=['GET', 'POST'])
+@application.route("/login", methods=['GET', 'POST'])
 def login():
   if request.method == 'POST':
     result = auth_login(request)
@@ -44,6 +45,14 @@ def login():
     flash(result)
 
   return render_template('login.html')
+
+@application.route("/logout")
+def logout():
+  result = auth_logout()
+
+  flash(result)
+
+  return redirect(url_for('login'))
 
 '''
   doc management setup and routes
