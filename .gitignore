@@ -1,5 +1,6 @@
 # Cache files
 __pycache__/*
+*/__pycache__/*
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

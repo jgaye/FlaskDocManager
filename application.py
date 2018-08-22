@@ -1,18 +1,9 @@
 import os 
 from flask import (Flask, flash, request, session, render_template, redirect, url_for)
-from werkzeug.security import check_password_hash, generate_password_hash
 
-from db import get_db
-
-# change storage location here
-# list(), download(), delete() and upload() reserved here
-
-# uncomment for local file management
-# from localFilesHelper import list, download, delete, upload
-
-# uncomment for S3 file management
-# from S3Helper import list, download, delete, upload
-
+'''
+  application setup
+'''
 application = Flask(__name__, instance_relative_config=True)
 application.config.from_mapping(
     # a default secret that should be overridden by instance config
@@ -36,43 +27,36 @@ if __name__ == "__main__":
 import db
 db.init_app(application)
 
+'''
+  auth routes
+'''
+
+from helpers.auth import auth_login
+
 # Login page
 @application.route("/", methods=['GET', 'POST'])
 def login():
   if request.method == 'POST':
-    username = request.form['username']
-    password = request.form['password']
-    db = get_db()
-    error = None
-    user = db.execute(
-      'SELECT * FROM user WHERE username = ?', (username,)
-    ).fetchone()
+    result = auth_login(request)
 
-    if user is None:
-      error = 'Incorrect username.'
-    elif not check_password_hash(generate_password_hash(user['password']), password):
-      error = 'Incorrect password.'
-
-    if error is None:
-      session.clear()
-      session['user_id'] = user['id']
+    if result is None:
       return redirect(url_for('index'))
-
-    flash(error)
+    flash(result)
 
   return render_template('login.html')
 
-@application.route('/upload', methods=['GET', 'POST'])
-def upload_document():
-  if request.method == 'POST':
-    # Try to perform the upload and get a confirmation message
-    result = upload(request)
+'''
+  doc management setup and routes
+'''
 
-    # Flash allows to show the confirmation message at index
-    flash(result)
-    return redirect(url_for('index'))
+# change storage location here
+# list(), download(), delete() and upload() reserved here
 
-  return render_template('uploadPage.html')
+# uncomment for local file management
+# from localFilesHelper import list, download, delete, upload
+
+# uncomment for S3 file management
+# from S3Helper import list, download, delete, upload
 
 # Listing page
 @application.route("/index")
@@ -102,3 +86,15 @@ def act_on_document(document):
     # Flash allows to show the confirmation message at index
     flash(result)
     return redirect(url_for('index'))
+
+@application.route('/upload', methods=['GET', 'POST'])
+def upload_document():
+  if request.method == 'POST':
+    # Try to perform the upload and get a confirmation message
+    result = upload(request)
+
+    # Flash allows to show the confirmation message at index
+    flash(result)
+    return redirect(url_for('index'))
+
+  return render_template('uploadPage.html')
