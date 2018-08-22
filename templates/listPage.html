@@ -19,7 +19,21 @@
 
 <h1>Your documents</h1>
 <ul>
-  {% for document in documents %}
+  {% for document in privateDocuments %}
+    <li>
+      <div class="documentRow">
+        <a href="{{url_for( 'act_on_document', document=document.name )}}">{{document.name}}</a>
+
+        <form action="{{ url_for('act_on_document', document=document.name ) }}" method="POST">
+          <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+        </form>
+      </div>
+    </li>
+  {% endfor %}
+</ul>
+<h1>Public documents</h1>
+<ul>
+  {% for document in publicDocuments %}
     <li>
       <div class="documentRow">
         <a href="{{url_for( 'act_on_document', document=document.name )}}">{{document.name}}</a>

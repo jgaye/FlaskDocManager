@@ -1,5 +1,5 @@
 import os 
-from flask import (Flask, flash, request, render_template, redirect, url_for)
+from flask import (Flask, flash, session, request, render_template, redirect, url_for)
 
 '''
   application setup
@@ -85,16 +85,22 @@ from helpers.S3Helper import list, download, delete, upload
 @application.route("/index")
 def index():
 
-  # Get the list of documents
-  result = list()
+  # Get the list of documents this user owns
+  privateDocuments = list('home/' + session['username'])
 
-  # If we have a string it is an error message
-  if type(result) is str: 
-    flash(result)
-    return render_template('listPage.html', documents = [])
+  # Get the list of publicly shared documents
+  publicDocuments = list('home/public')
+
+  # If we have a string it is an error message  
+  if type(privateDocuments) is str: 
+    flash(privateDocuments)
+    privateDocuments = []
+  if type(publicDocuments) is str: 
+    flash(publicDocuments)
+    publicDocuments = []
 
   # Display the list with controls
-  return render_template('listPage.html', documents = result)
+  return render_template('listPage.html', privateDocuments = privateDocuments, publicDocuments = publicDocuments)
 
 @application.route("/<string:document>", methods=['GET', 'POST'])
 def act_on_document(document):

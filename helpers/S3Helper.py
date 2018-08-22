@@ -14,14 +14,20 @@ def open_s3_session(s3_key, s3_secret):
     aws_access_key_id=s3_key,
     aws_secret_access_key=s3_secret
   )
+  # return boto3.resource(
+  #   "s3",
+  #   aws_access_key_id=s3_key,
+  #   aws_secret_access_key=s3_secret
+  # )
 
-def list():
+def list(prefix):
   try:
     # open the session
     s3 = open_s3_session(session['s3_key'], session['s3_secret'])
 
     # returns only the first 1000 elements of S3
-    s3Contents = s3.list_objects(Bucket=session['s3_bucket'])['Contents']
+    s3Contents = s3.list_objects(Bucket=session['s3_bucket'], Prefix=prefix)['Contents']
+    # s3Contents = s3.buckets.all()
   except Exception as e:
     return "Listing failed with: " + str(e)
   finally:
