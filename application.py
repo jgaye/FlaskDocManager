@@ -31,7 +31,7 @@ db.init_app(application)
   auth routes
 '''
 
-from helpers.auth import auth_login, auth_logout
+from helpers.auth import auth_login, auth_logout, auth_register
 
 # Login page
 @application.route("/", methods=['GET', 'POST'])
@@ -54,6 +54,20 @@ def logout():
 
   return redirect(url_for('login'))
 
+@application.route("/register", methods=['GET', 'POST'])
+def register():
+  if request.method == 'POST':
+    result = auth_register(request)
+
+    if result is None:
+      flash("User successfully registered. Now please login")
+      return redirect(url_for('login'))
+      
+    flash(result)
+    return redirect(url_for('register'))
+
+  return render_template('register.html')
+
 '''
   doc management setup and routes
 '''
@@ -68,42 +82,42 @@ def logout():
 # from S3Helper import list, download, delete, upload
 
 # Listing page
-@application.route("/index")
-def index():
+# @application.route("/index")
+# def index():
 
-  # Get the list of documents
-  documents = list()
+#   # Get the list of documents
+#   documents = list()
 
-  # Display the list with controls
-  return render_template('listPage.html', documents = documents)
+#   # Display the list with controls
+#   return render_template('listPage.html', documents = documents)
 
-@application.route("/<string:document>", methods=['GET', 'POST'])
-def act_on_document(document):
-  if request.method == 'GET':
-    # Try to perform the download and get a confirmation message
-    result = download(document)
+# @application.route("/<string:document>", methods=['GET', 'POST'])
+# def act_on_document(document):
+#   if request.method == 'GET':
+#     # Try to perform the download and get a confirmation message
+#     result = download(document)
 
-    # Flash allows to show the confirmation message at index
-    flash(result)
-    return redirect(url_for('index'))
+#     # Flash allows to show the confirmation message at index
+#     flash(result)
+#     return redirect(url_for('index'))
 
-  # the method should be DELETE but the template doesn't support DELETE
-  elif request.method == 'POST':
-    # Try to perform the delete and get a confirmation message
-    result = delete(document)
+#   # the method should be DELETE but the template doesn't support DELETE
+#   elif request.method == 'POST':
+#     # Try to perform the delete and get a confirmation message
+#     result = delete(document)
 
-    # Flash allows to show the confirmation message at index
-    flash(result)
-    return redirect(url_for('index'))
+#     # Flash allows to show the confirmation message at index
+#     flash(result)
+#     return redirect(url_for('index'))
 
-@application.route('/upload', methods=['GET', 'POST'])
-def upload_document():
-  if request.method == 'POST':
-    # Try to perform the upload and get a confirmation message
-    result = upload(request)
+# @application.route('/upload', methods=['GET', 'POST'])
+# def upload_document():
+#   if request.method == 'POST':
+#     # Try to perform the upload and get a confirmation message
+#     result = upload(request)
 
-    # Flash allows to show the confirmation message at index
-    flash(result)
-    return redirect(url_for('index'))
+#     # Flash allows to show the confirmation message at index
+#     flash(result)
+#     return redirect(url_for('index'))
 
-  return render_template('uploadPage.html')
+#   return render_template('uploadPage.html')

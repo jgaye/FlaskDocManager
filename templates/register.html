@@ -1,0 +1,27 @@
+<!doctype html>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+
+{% block header %}
+  <h1>{% block title %}Register{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="username">Username</label>
+    <input name="username" id="username" required>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+    <label for="s3_bucket">S3 Bucket</label>
+    <input name="s3_bucket" id="s3_bucket" required>
+    <label for="s3_key">S3 Key</label>
+    <input name="s3_key" id="s3_key" required>
+    <label for="s3_secret">S3 Secret</label>
+    <input type="password" name="s3_secret" id="s3_secret" required>
+    <input type="submit" value="Register">
+  </form>
+{% endblock %}
+
+<form action="{{ url_for('login') }}" method="GET">
+  <button>Back to login</button>
+</form>
