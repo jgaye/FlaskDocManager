@@ -1,5 +1,8 @@
 import os 
-from flask import (Flask, flash, request, render_template, redirect, url_for)
+from flask import (Flask, flash, request, session, render_template, redirect, url_for)
+from werkzeug.security import check_password_hash, generate_password_hash
+
+from db import get_db
 
 # change storage location here
 # list(), download(), delete() and upload() reserved here
@@ -12,7 +15,7 @@ from flask import (Flask, flash, request, render_template, redirect, url_for)
 
 application = Flask(__name__, instance_relative_config=True)
 application.config.from_mapping(
-  # a default secret that should be overridden by instance config
+    # a default secret that should be overridden by instance config
     SECRET_KEY=b'gH20EwUgZC#E',
     # store the database in the instance folder
     DATABASE=os.path.join(application.instance_path, 'user.sqlite'),
@@ -33,6 +36,32 @@ if __name__ == "__main__":
 import db
 db.init_app(application)
 
+# Login page
+@application.route("/", methods=['GET', 'POST'])
+def login():
+  if request.method == 'POST':
+    username = request.form['username']
+    password = request.form['password']
+    db = get_db()
+    error = None
+    user = db.execute(
+      'SELECT * FROM user WHERE username = ?', (username,)
+    ).fetchone()
+
+    if user is None:
+      error = 'Incorrect username.'
+    elif not check_password_hash(generate_password_hash(user['password']), password):
+      error = 'Incorrect password.'
+
+    if error is None:
+      session.clear()
+      session['user_id'] = user['id']
+      return redirect(url_for('index'))
+
+    flash(error)
+
+  return render_template('login.html')
+
 @application.route('/upload', methods=['GET', 'POST'])
 def upload_document():
   if request.method == 'POST':
@@ -46,7 +75,6 @@ def upload_document():
   return render_template('uploadPage.html')
 
 # Listing page
-@application.route("/")
 @application.route("/index")
 def index():
 
