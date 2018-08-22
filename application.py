@@ -1,3 +1,4 @@
+import os 
 from flask import (Flask, flash, request, render_template, redirect, url_for)
 
 # change storage location here
@@ -7,16 +8,30 @@ from flask import (Flask, flash, request, render_template, redirect, url_for)
 # from localFilesHelper import list, download, delete, upload
 
 # uncomment for S3 file management
-from S3Helper import list, download, delete, upload
+# from S3Helper import list, download, delete, upload
 
-application = Flask(__name__)
-application.secret_key = b'gH20EwUgZC#E'
+application = Flask(__name__, instance_relative_config=True)
+application.config.from_mapping(
+  # a default secret that should be overridden by instance config
+    SECRET_KEY=b'gH20EwUgZC#E',
+    # store the database in the instance folder
+    DATABASE=os.path.join(application.instance_path, 'user.sqlite'),
+)
+
+# ensure the instance folder exists
+try:
+    os.makedirs(application.instance_path)
+except OSError:
+    pass
 
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
     # removed before deploying a production app.
     application.debug = True
     application.run()
+
+import db
+db.init_app(application)
 
 @application.route('/upload', methods=['GET', 'POST'])
 def upload_document():
