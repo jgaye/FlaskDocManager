@@ -1,8 +1,8 @@
 import os
 import boto3, botocore
-from flask import session
+from flask import session, redirect, url_for
 from werkzeug.utils import secure_filename
-from urllib.parse import quote
+from urllib.parse import quote, unquote
 
 DOWNLOAD_FOLDER = './downloadFolder/'
 
@@ -40,6 +40,7 @@ def list(prefix):
 
     if filename:
       document['name'] = quote(filename)
+      document['url'] = quote(currentFile['Key'], safe='')
       documents.append(document)
   return documents
 
@@ -48,8 +49,8 @@ def download(document):
   try:
     s3 = open_s3_session(session['s3_key'], session['s3_secret'])
 
-    s3.download_file(session['s3_bucket'], 'home/' + session['username'] + '/' + document, DOWNLOAD_FOLDER + document)  
-    return document + ' was successfully downloaded'
+    s3.download_file(session['s3_bucket'], unquote(document), DOWNLOAD_FOLDER + unquote(document).split('/')[-1])  
+    return unquote(document).split('/')[-1] + ' was successfully downloaded'
   except Exception as e:
     return "Download failed with: " + str(e)
   finally:
@@ -59,8 +60,8 @@ def delete(document):
   try:
     s3 = open_s3_session(session['s3_key'], session['s3_secret'])
 
-    s3.delete_object(Bucket=session['s3_bucket'], Key='home/' + session['username'] + '/' + document)
-    return document + ' was successfully deleted'
+    s3.delete_object(Bucket=session['s3_bucket'], Key=unquote(document) )
+    return unquote(document).split('/')[-1] + ' was successfully deleted'
   except Exception as e:
     return "Delete failed with: " + str(e)
   finally:

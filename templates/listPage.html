@@ -22,9 +22,9 @@
   {% for document in privateDocuments %}
     <li>
       <div class="documentRow">
-        <a href="{{url_for( 'act_on_document', document=document.name )}}">{{document.name}}</a>
+        <a href="{{url_for( 'act_on_document', document=document.url )}}">{{document.name}}</a>
 
-        <form action="{{ url_for('act_on_document', document=document.name ) }}" method="POST">
+        <form action="{{ url_for('act_on_document', document=document.url ) }}" method="POST">
           <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
         </form>
       </div>
@@ -36,9 +36,9 @@
   {% for document in publicDocuments %}
     <li>
       <div class="documentRow">
-        <a href="{{url_for( 'act_on_document', document=document.name )}}">{{document.name}}</a>
+        <a href="{{url_for( 'act_on_document', document=document.url )}}">{{document.name}}</a>
 
-        <form action="{{ url_for('act_on_document', document=document.name ) }}" method="POST">
+        <form action="{{ url_for('act_on_document', document=document.url ) }}" method="POST">
           <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
         </form>
       </div>
