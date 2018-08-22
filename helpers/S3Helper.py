@@ -2,6 +2,7 @@ import os
 import boto3, botocore
 from flask import session
 from werkzeug.utils import secure_filename
+from urllib.parse import quote
 
 DOWNLOAD_FOLDER = './downloadFolder/'
 
@@ -14,11 +15,6 @@ def open_s3_session(s3_key, s3_secret):
     aws_access_key_id=s3_key,
     aws_secret_access_key=s3_secret
   )
-  # return boto3.resource(
-  #   "s3",
-  #   aws_access_key_id=s3_key,
-  #   aws_secret_access_key=s3_secret
-  # )
 
 def list(prefix):
   try:
@@ -38,8 +34,13 @@ def list(prefix):
   documents = []
   for currentFile in s3Contents:  
     document = {}
-    document['name'] = currentFile['Key']
-    documents.append(document)
+
+    # dirty split of the Key to get only the files, and only the names
+    filename = currentFile['Key'].split('/')[-1]
+
+    if filename:
+      document['name'] = quote(filename)
+      documents.append(document)
   return documents
 
 def download(document):
@@ -47,7 +48,7 @@ def download(document):
   try:
     s3 = open_s3_session(session['s3_key'], session['s3_secret'])
 
-    s3.download_file(S3_BUCKET, document, DOWNLOAD_FOLDER + document)  
+    s3.download_file(session['s3_bucket'], 'home/' + session['username'] + '/' + document, DOWNLOAD_FOLDER + document)  
     return document + ' was successfully downloaded'
   except Exception as e:
     return "Download failed with: " + str(e)
@@ -58,7 +59,7 @@ def delete(document):
   try:
     s3 = open_s3_session(session['s3_key'], session['s3_secret'])
 
-    s3.delete_object(Bucket=session['s3_bucket'], Key=document)
+    s3.delete_object(Bucket=session['s3_bucket'], Key='home/' + session['username'] + '/' + document)
     return document + ' was successfully deleted'
   except Exception as e:
     return "Delete failed with: " + str(e)
@@ -90,7 +91,7 @@ def upload(request):
       s3.upload_fileobj(
           file,
           session['s3_bucket'],
-          filename,
+          'home/' + session['username'] + '/' + filename,
           ExtraArgs={
               "ContentType": file.content_type
           }
