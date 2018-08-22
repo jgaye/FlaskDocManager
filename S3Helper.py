@@ -6,7 +6,6 @@ DOWNLOAD_FOLDER = './downloadFolder/'
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'xlsx', 'pptx', 'docx'])
 
-# How to setup on AWS ?
 S3_BUCKET                 = os.environ.get("S3_BUCKET_NAME")
 S3_KEY                    = os.environ.get("S3_ACCESS_KEY")
 S3_SECRET                 = os.environ.get("S3_SECRET_ACCESS_KEY")
@@ -23,7 +22,6 @@ def list():
     # returns only the first 1000 elements of S3
     s3Contents = s3.list_objects(Bucket=S3_BUCKET)['Contents']
   except Exception as e:
-    # This is a catch all exception, edit this part to fit your needs.
     return "Listing failed with: " + str(e)
 
   # Transform the data to use the expected schema

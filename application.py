@@ -5,11 +5,12 @@ from flask import (Flask, flash, request, render_template, redirect, url_for)
 
 # uncomment for local file management
 # from localFilesHelper import list, download, delete, upload
-# uncomment for S3 fil management
+
+# uncomment for S3 file management
 from S3Helper import list, download, delete, upload
 
 application = Flask(__name__)
-application.secret_key = b'mySecretKeyForFlash'
+application.secret_key = b'gH20EwUgZC#E'
 
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
@@ -17,12 +18,6 @@ if __name__ == "__main__":
     application.debug = True
     application.run()
 
-@application.route('/')
-def hello():
-  return "<h1>Hello World</h1>"
-
-
-# Should I use the Flask-Uploads extension instead ?
 @application.route('/upload', methods=['GET', 'POST'])
 def upload_document():
   if request.method == 'POST':
@@ -36,6 +31,7 @@ def upload_document():
   return render_template('uploadPage.html')
 
 # Listing page
+@application.route("/")
 @application.route("/index")
 def index():
 
