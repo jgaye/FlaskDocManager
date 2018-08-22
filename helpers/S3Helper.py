@@ -1,6 +1,6 @@
 import os
 import boto3, botocore
-from flask import session, redirect, url_for
+from flask import session, redirect
 from werkzeug.utils import secure_filename
 from urllib.parse import quote, unquote
 
@@ -48,9 +48,11 @@ def download(document):
   # downloads to the local DOWNLOAD_FOLDER, will that work on AWS?
   try:
     s3 = open_s3_session(session['s3_key'], session['s3_secret'])
+    file_path = unquote(document)
 
-    s3.download_file(session['s3_bucket'], unquote(document), DOWNLOAD_FOLDER + unquote(document).split('/')[-1])  
-    return unquote(document).split('/')[-1] + ' was successfully downloaded'
+    s3.download_file(session['s3_bucket'], file_path, DOWNLOAD_FOLDER + file_path.split('/')[-1])
+    file_location = [DOWNLOAD_FOLDER, file_path.split('/')[-1]]
+    return file_location
   except Exception as e:
     return "Download failed with: " + str(e)
   finally:

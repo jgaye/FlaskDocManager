@@ -1,5 +1,5 @@
 import os 
-from flask import (Flask, flash, session, request, render_template, redirect, url_for)
+from flask import (Flask, flash, session, request, render_template, redirect, url_for, send_from_directory)
 
 '''
   application setup
@@ -105,12 +105,18 @@ def index():
 @application.route("/<string:document>", methods=['GET', 'POST'])
 def act_on_document(document):
   if request.method == 'GET':
-    # Try to perform the download and get a confirmation message
+    # Try to perform the download and get 
+    # the folder in which it was downloaded
+    # the filename
     result = download(document)
 
-    # Flash allows to show the confirmation message at index
-    flash(result)
-    return redirect(url_for('index'))
+    # if result is a string, then it's an error message
+    if type(result) is str:  
+      flash(result)
+      return redirect(url_for('index'))
+
+    # TODO actually check that the result has the correct shape
+    return send_from_directory(result[0], result[1], as_attachment=True)
 
   # the method should be DELETE but the template doesn't support DELETE
   elif request.method == 'POST':
