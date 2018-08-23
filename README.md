@@ -14,15 +14,27 @@ In this Flask application you can:
 
 ## Quickstart
 
-To setup the App:
+You need to have Flask 1.0.2 , Python 3.6.5 (should come with Flask), boto3 1.7.81 and botocore 1.10.81.
 
 Open your terminal at the location of the app.
 
 > export FLASK_APP=application.py  
+> export FLASK_ENV=development  
 > flask init-db  
 > flask run  
 
-Then browse to localhost:5000
+Browse to localhost:5000
+
+To use the App, you will have to setup a S3 bucket, users and policies (see next section).
+
+Once that's done, register your user in the app:
+- the selected username must be the same as the Amazon username, to the case.
+- use any password you want.
+- use the name S3 bucket you setup, found in S3, for the S3 Bucket entry .
+- use your Amazon user Access key ID for the S3 Key entry, and your Amazon user Secret access key for the S3 Secret entry. You will find both in the Security credentials tabs of your user in IAM. You might have to generate new keys.
+
+If you messed something up and need to reset the use database of the app, open your terminal at the location of the app and do:
+> flask init-db
 
 ## Setup S3
 
