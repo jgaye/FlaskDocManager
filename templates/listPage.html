@@ -24,6 +24,9 @@
       <div class="documentRow">
         <a href="{{url_for( 'act_on_document', document=document.url )}}">{{document.name}}</a>
 
+        <form action="{{ url_for('share_document', document=document.url ) }}" method="POST">
+          <input class="danger" type="submit" value="Share" onclick="return confirm('All other users will have access to that document, are you sure?');">
+        </form>
         <form action="{{ url_for('act_on_document', document=document.url ) }}" method="POST">
           <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
         </form>

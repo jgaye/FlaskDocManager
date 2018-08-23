@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 from urllib.parse import quote, unquote
 
 DOWNLOAD_FOLDER = './downloadFolder/'
+PUBLIC_FOLDER = 'home/public/'
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'xlsx', 'pptx', 'docx'])
 
@@ -109,3 +110,27 @@ def upload(request):
       return "Upload failed with: " + str(e)
     finally:
       del s3
+
+def copy(origin_path, destination_path):
+  try:
+    s3 = open_s3_session(session['s3_key'], session['s3_secret'])
+
+    s3.copy_object(Bucket=session['s3_bucket'], CopySource=session['s3_bucket'] + '/' + origin_path, Key=destination_path)
+  except Exception as e:
+    return "Copy failed with: " + str(e)
+  finally:
+    del s3
+
+def share(document):
+  filename = unquote(document).split('/')[-1]
+  
+  # return either an error message or nothing
+  copy_result = copy(unquote(document), PUBLIC_FOLDER + filename)
+
+  if copy_result:
+    return copy_result
+
+  return delete(document)
+
+
+
