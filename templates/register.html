@@ -11,6 +11,14 @@
     <h1>{% block title %}Register{% endblock %}</h1>
   {% endblock %}
 
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        <input class="log" type="text" value="> {{ message }}">
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
   {% block content %}
     <form method="post">
       <label for="username">Username</label>
