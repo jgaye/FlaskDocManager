@@ -79,7 +79,7 @@ def register():
 # from localFilesHelper import list, download, delete, upload
 
 # uncomment for S3 file management
-from helpers.S3Helper import list, download, delete, upload, share
+from helpers.S3Helper import list, download, delete, upload, share, unshare
 
 # Listing page
 @application.route("/index")
@@ -143,6 +143,14 @@ def upload_document():
 def share_document(document):
   # Share the document from private to public folder
   result = share(document)
+
+  flash(result)
+  return redirect(url_for('index'))
+
+@application.route('/unshare/<string:document>', methods=['POST'])
+def unshare_document(document):
+  # Share the document from private to public folder
+  result = unshare(document)
 
   flash(result)
   return redirect(url_for('index'))

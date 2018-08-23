@@ -132,5 +132,19 @@ def share(document):
 
   return delete(document)
 
+def unshare(document):
+  filename = unquote(document).split('/')[-1]
+
+  # upload to the current user folder in S3
+  UPLOAD_FOLDER = 'home/' + session['username'] + '/'
+  
+  # return either an error message or nothing
+  copy_result = copy(unquote(document), UPLOAD_FOLDER + filename)
+
+  if copy_result:
+    return copy_result
+
+  return delete(document)
+
 
 
