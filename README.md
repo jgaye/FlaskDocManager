@@ -2,7 +2,7 @@
 
 A simple Document Manager with user access built with Flask and python3.  
 All files are stored and managed in an Amazon S3 bucket, accessed with the boto3 SDK. Access rights to the files are managed through Amazon IAM policies.  
-The application users are managed from an SQLite3 DB.  
+The local users are managed with an SQLite3 DB.  
 
 In this Flask application you can:
 - Register users with a username, password, and S3 user credentials.
@@ -33,7 +33,7 @@ Once that's done, register your user in the app:
 - use the name S3 bucket you created, found in S3, for the S3 Bucket entry .
 - use your Amazon user Access key ID for the S3 Key entry, and your Amazon user Secret access key for the S3 Secret entry. You will find both in the Security credentials tabs of your user in IAM. You might have to generate new keys.
 
-If you messed something up and need to reset the use database of the app, open your terminal at the location of the app and do:
+If you messed something up and need to reset the user database of the app, open your terminal at the location of the app and do:
 > flask init-db
 
 ## Setup S3
@@ -44,8 +44,8 @@ The application expects a specific S3 bucket architectue to handle private and p
 To set it up, go to Amazon S3 web console.
 1. Create a bucket, it can have any name you want. Default bucket options are ok.
 2. In the root of that bucket, create a folder named `home`.
-3. In the `home/` folder, create a folder named `public`. it will hold all files that will be avaialable to all users.
-4. In that same `home/` folder, create one folder for each of your expected Amazon users. Those folder must have the exact same name as the user's username. Each folder will hold files that are private to the corresponding user.
+3. In the `home/` folder, create a folder named `public`. It will hold all files that are available to all users.
+4. In that same `home/` folder, create one folder for each of your expected Amazon users. Those folder must have the exact same name as the user's username (the users will be created in one of the net sections). Each folder will hold files that are private to the corresponding user.
 
 ### Create the file access policy
 
@@ -140,6 +140,9 @@ The final step consists in creating our S3 users, link them to the group and get
 5. Review and create the user.
 6. You can grab the `Access key ID` and `Secret access key` in the next screen to be used in the Flask Doc Manager app register screen.
 
-Repeat the above step for each user you want to create.
+Repeat the above steps for each user you want to create.
+
+
+You can now register your users in the Flask Doc Management app, and manage the files stored in their S3 folder, and in the `public` folder.
 
 
