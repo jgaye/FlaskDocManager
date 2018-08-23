@@ -21,6 +21,7 @@ h1 {
 label {
   display: inline-block;
   width: 10vw;
+  min-width: 100px;
   color: #0042da;
   background: #fff;
   padding: 15px 30px;
@@ -60,6 +61,8 @@ a:active{
 input[type='submit'] {
   display: inline-block;
   width: 11vw;
+  min-width: 150px;
+  margin-bottom: 10px;
   color: #0042da;
   background: #75DEFF;
   padding: 15px 30px;
@@ -90,19 +93,12 @@ input[type='submit'].secondary {
 
 input[type='submit'].big {
   width: 30vw;
-}
-
-.hide_file {
-    z-index: 1000;
-    opacity: 0;
-    cursor: pointer;
-    height: 100%;
-    font-size: 24px;
-    width: 100%;
+  min-width: 300px;
 }
 
 .document_row {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
 }
 
