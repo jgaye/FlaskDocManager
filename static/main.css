@@ -7,7 +7,7 @@ body {
 }
 
 .main {
-  padding-top: 100px;
+  padding-top: 10vh;
 }
 
 h1 {
@@ -20,7 +20,7 @@ h1 {
 
 label {
   display: inline-block;
-  width: 10%;
+  width: 10vw;
   color: #0042da;
   background: #fff;
   padding: 15px 30px;
@@ -34,7 +34,7 @@ label {
 }
 
 input[type='text'], input[type='password']{
-  width: 33%;
+  width: 33vw;
   background: #002c91;
   color: #fff;
   padding: 15px 30px;
@@ -50,7 +50,7 @@ input[type='text'], input[type='password']{
 
 input[type='submit'] {
   display: inline-block;
-  width: 10%;
+  width: 11vw;
   color: #0042da;
   background: #75DEFF;
   padding: 15px 30px;
