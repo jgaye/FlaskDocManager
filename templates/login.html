@@ -13,11 +13,9 @@
 
   {% with messages = get_flashed_messages() %}
     {% if messages %}
-      <ul class=flashes>
       {% for message in messages %}
-        <li>{{ message }}</li>
+        <input class="log" type="text" value="> {{ message }}">
       {% endfor %}
-      </ul>
     {% endif %}
   {% endwith %}
 

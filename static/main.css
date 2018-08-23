@@ -48,6 +48,16 @@ input[type='text'], input[type='password']{
   font-family: Avenir,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
 }
 
+input[type='text'].log {
+  cursor: default;
+}
+input[type='text'].log.error {
+  color: red;
+}
+input[type='text'].log.success {
+  color: green;
+}
+
 input[type='submit'] {
   display: inline-block;
   width: 11vw;
