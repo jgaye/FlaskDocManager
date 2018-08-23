@@ -2,17 +2,31 @@
 
 <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 
-<title>Uploading page</title>
-
 <form action="{{ url_for('logout') }}" method="GET">
-  <button>Logout</button>
+  <input class="secondary" type="submit" value="logout">
 </form>
 
-<h1>Upload new File</h1>
-<form method=post enctype=multipart/form-data>
-  <input type=file name=file>
-  <input type=submit value=Upload>
-</form>
+<section class="main">
+  {% block header %}
+    <title>Flask Document Manager</title>
+    <h1>{% block title %}Upload a document{% endblock %}</h1>
+  {% endblock %}
 
-<br>
-<a href="{{url_for('index')}}">Here to see the list of your documents</a>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        <input class="log" type="text" value="> {{ message }}">
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <form method=post enctype=multipart/form-data>
+    <input type=file name=file>
+    <input type=submit value=Upload>
+  </form>
+  <br>
+
+  <form action="{{ url_for('index') }}" method="GET">
+    <input class="big" type="submit" value="back to documents">
+  </form>
+</section>
