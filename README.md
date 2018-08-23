@@ -14,10 +14,11 @@ In this Flask application you can:
 
 ## Quickstart
 
-You need to have Flask 1.0.2 , Python 3.6.5 (should come with Flask), boto3 1.7.81 and botocore 1.10.81.
+You need to have Python3 and virtualenv installed on your machine.
+The app uses Flask 1.0.2 , Python 3.6.5 (should come with Flask), boto3 1.7.81 and botocore 1.10.81. Those are packaged in the included virtual environment.
 
-Open your terminal at the location of the app.
-
+Open your terminal at the location of the app, then run the following commands:
+> source virt/bin/activate
 > export FLASK_APP=application.py  
 > export FLASK_ENV=development  
 > flask init-db  
