@@ -30,7 +30,7 @@ To use the App, you will have to setup a S3 bucket, users and policies (see next
 Once that's done, register your user in the app:
 - the selected username must be the same as the Amazon username, to the case.
 - use any password you want.
-- use the name S3 bucket you setup, found in S3, for the S3 Bucket entry .
+- use the name S3 bucket you created, found in S3, for the S3 Bucket entry .
 - use your Amazon user Access key ID for the S3 Key entry, and your Amazon user Secret access key for the S3 Secret entry. You will find both in the Security credentials tabs of your user in IAM. You might have to generate new keys.
 
 If you messed something up and need to reset the use database of the app, open your terminal at the location of the app and do:
@@ -42,7 +42,7 @@ If you messed something up and need to reset the use database of the app, open y
 
 The application expects a specific S3 bucket architectue to handle private and public folder for users.  
 To set it up, go to Amazon S3 web console.
-1. Create a bucket, it can have any name you want. I will refer to it as `bucket_name` below. Default bucket options are ok.
+1. Create a bucket, it can have any name you want. Default bucket options are ok.
 2. In the root of that bucket, create a folder named `home`.
 3. In the `home/` folder, create a folder named `public`. it will hold all files that will be avaialable to all users.
 4. In that same `home/` folder, create one folder for each of your expected Amazon users. Those folder must have the exact same name as the user's username. Each folder will hold files that are private to the corresponding user.
@@ -52,7 +52,7 @@ To set it up, go to Amazon S3 web console.
 The file access policy will allow all users to see and managed files in the `home/public/` folder, and to have access to their own private folder `home/{username}`.  
 We are going to set the policy up and apply it to a whole group.
 1. Go to the IAM management console, to the Policies tab and `Create policy`
-2. In the JSON editor of the policy, paste the following code:
+2. In the JSON editor of the policy, paste the following code:  
 ```
 {
     "Version": "2012-10-17",
@@ -121,9 +121,9 @@ We are going to set the policy up and apply it to a whole group.
             ]
         }
     ]
-}
-```
-See [this blog post](https://aws.amazon.com/blogs/security/writing-iam-policies-grant-access-to-user-specific-folders-in-an-amazon-s3-bucket/) and [this comment](ttps://forums.aws.amazon.com/thread.jspa?threadID=277445&tstart=0) for more information on how that policy works.
+}  
+```  
+See [this blog post](https://aws.amazon.com/blogs/security/writing-iam-policies-grant-access-to-user-specific-folders-in-an-amazon-s3-bucket/) and [this comment](ttps://forums.aws.amazon.com/thread.jspa?threadID=277445&tstart=0) for more information on how that policy works.  
 3. Review and name the policy with a name of your choosing.
 4. Go back to the IAM management console, and create a new group. Use any name you want.
 5. In the Permissions tab of the group, attach the previously created policy.
